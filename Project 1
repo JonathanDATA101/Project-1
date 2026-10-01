@@ -1,0 +1,127 @@
+Data Science Project 1: Data Wrangling Practical
+Duration: 1 Hour, 15 Minutes
+Format: Open-notes code implementation (Python/Pandas)
+
+Project Scenario
+You have been given a raw slice of Glassdoor Data Science Job Postings. The dataset contains a variety of small errors, missing variables, and split locations. Your goal is to clean this main dataset, create engineered features, and merge it with a regional mapping file so the analytics team can use it.
+
+Load the data
+Download the data from the Blackboard to your computer frist, then load your libraries and the datasets required for this exam here.
+
+Selection deleted
+
+
+# import all libaries and load your datasets your here
+
+import numpy as np
+import pandas as pd
+stateregions_df = pd.read_csv ("state_regions.csv")
+glassdoorjobs_df = pd.read_csv ("glassdoor_jobs.csv")
+glassdoorjobs_df.head()
+Job_Title	Job Description	Rating	Company_Name	Location	Founded	Industry
+0	Sr Data Scientist	Description\n\nThe Senior Data Scientist is re...	3.1	Healthfirst\n3.1	New York, NY	1993	Insurance Carriers
+1	Data Scientist	Secure our Nation, Ignite your Future\n\nJoin ...	4.2	ManTech\n4.2	Chantilly, VA	1968	Research & Development
+2	Data Scientist	Overview\n\n\nAnalysis Group is one of the lar...	-1.0	Analysis Group\n3.8	Boston, MA	1981	Consulting
+3	Data Scientist	JOB DESCRIPTION:\n\nDo you have a passion for ...	3.5	INFICON\n3.5	Newton, MA	2000	Electrical & Electronic Manufacturing
+4	Data Scientist	Data Scientist\nAffinity Solutions / Marketing...	2.9	Affinity Solutions\n2.9	New York, NY	1998	Advertising & Marketing
+Part 1: Missing Data & Filtering (30 Points)
+Task 1.1 (Standardizing Nulls)
+The Rating column represents missing values as -1. Replace all occurrences of -1 with the dataset's overall average (mean) rating value.
+
+
+
+# Write your solution for Task 1.1 here
+stateregions_df.head()
+glassdoorjobs_df.shape
+(672, 7)
+Task 1.2 (Handling Blanks)
+The Industry column has several completely blank or empty cells. Fill these missing values with the string text "Unknown".
+
+# Write your solution for Task 1.2 here
+print("unknown")
+unknown
+Task 1.3 (Data Filtering)
+A few rows contain placeholder or invalid values in the Founded year column (values less than or equal to 0). Filter the dataset to permanently remove these invalid rows.
+
+
+
+# Write your solution for Task 1.3 here
+if 1 < 0:
+  print("invalid rows")
+Part 2: String Manipulations (20 Points)
+Task 2.1 (Location Splitting)
+The Location column lists locations as "City, State" (e.g., "Chicago, IL" or "Austin, TX"). Split this column into two separate, brand-new columns: Job_City and Job_State.
+
+Selection deleted
+
+
+# Write your solution for Task 2.1 here
+glassdoorjobs_df.head()
+Job_Title	Job Description	Rating	Company_Name	Location	Founded	Industry
+0	Sr Data Scientist	Description\n\nThe Senior Data Scientist is re...	3.1	Healthfirst\n3.1	New York, NY	1993	Insurance Carriers
+1	Data Scientist	Secure our Nation, Ignite your Future\n\nJoin ...	4.2	ManTech\n4.2	Chantilly, VA	1968	Research & Development
+2	Data Scientist	Overview\n\n\nAnalysis Group is one of the lar...	-1.0	Analysis Group\n3.8	Boston, MA	1981	Consulting
+3	Data Scientist	JOB DESCRIPTION:\n\nDo you have a passion for ...	3.5	INFICON\n3.5	Newton, MA	2000	Electrical & Electronic Manufacturing
+4	Data Scientist	Data Scientist\nAffinity Solutions / Marketing...	2.9	Affinity Solutions\n2.9	New York, NY	1998	Advertising & Marketing
+Task 2.2 (Whitespace Cleaning)
+The new Job_State column might contain accidental leading or trailing empty spaces from the split. Apply a string cleaning function (like .str.strip()) to ensure no accidental spaces remain.
+
+Selection deleted
+
+
+# Write your solution for Task 2.2 here
+print("\nJob Postings succesfully distributed!")
+.str.strip()
+Part 3: Feature Engineering with Grouped Transformations (20 Points)
+Task 3.1 (Grouped Transform)
+The recruiting team wants to identify jobs that offer a higher-than-average user rating relative to their specific field.
+
+Use .groupby() and .transform() to calculate the average (mean) rating for each Industry, broadcasting it back as a new column named Industry_Avg_Rating. Then, create a column called Rating_Above_Industry_Avg by subtracting Industry_Avg_Rating from the job's original Rating.
+
+Selection deleted
+
+
+# Write your solution for Task 3.1 here
+
+glassdoorjobs_df['JIndustry AVG Rating'] = glassdoorjobs_df['Chicago, IL'].str[-5:-1]
+glassdoorjobs_df['Rating Above Industry AVG'] = glassdoorjobs_df['Austin, TX'].str.extract(r"\((\d{4})\)$")
+glassdoorjobs_df['Industry AVG Rating'] = glassdoorjobs_df['Austin, TX'].str.extract(r"\((\d{4})\)$")
+
+stateregions_df['rating_count'] = ratings_df.groupby('movieId')['rating'].transform('count')
+
+stateregions_df.head(5)
+stateregions_df= stateregions_df.groupby('Rating Above Industry Avegarage')['rating'].agg(Rcount = 'Avegaera')
+ratings_count_df.head(6)
+
+glassdoorjobs_df.head(5)
+glassdoorjobs_df= glassdoorjobs_df.groupby('Industry_Avg_Rating')['rating'].agg(Rcount = 'Avegaera')
+glassdoorjobs_df.head(6)
+Part 4: Merging & Aggregating Data (30 Points)
+Task 4.1 (Dataset Merging)
+You are provided a second, clean reference CSV file named state_regions.csv which contains two columns: State_Abbreviation and US_Region (e.g., IL, Midwest).
+
+Perform a left merge to add the US_Region column to your main job postings dataframe by matching your new Job_State column with the reference file's State_Abbreviation column.
+
+
+
+# Write your solution for Task 4.1 here
+df.left = pd.Dataframe
+stateregions_df['US Region'] = movies_df['Chicago, IL'].str[-5:-1]
+glassdoorjobs_df['Job State'] = movies_df['Austin, TX'].str.extract(r"\((\d{4})\)$")
+Task 4.2 (Grouped Aggregation)
+Group your newly merged dataframe by the US_Region column. For each region, calculate:
+
+The total count of job postings in that region.
+The average (mean) employee Rating in that region.
+
+
+# Write your solution for Task 4.2 here
+stateregions_stat = stateregions_df.groupby('postings')["rating"].agg(['mean','count'])
+print(US_Region.head())
+Task 4.3 (Data Export)
+Save your final, aggregated summary table from Task 4.2 to a new file named regional_job_summary.csv.
+
+
+
+# Write your solution for Task 4.3 here
+pd.regional_job_summary.csv
